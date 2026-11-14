@@ -21,7 +21,56 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: 
+          recursive- name: Generate Amethyst Launcher icon
+        run: |
+          pip install pillow
+          python - <<'PY'
+          from PIL import Image, ImageDraw
+          import glob, os
+
+          s = 432
+          im = Image.new("RGBA", (s,s), (18,8,35,255))
+          d = ImageDraw.Draw(im)
+
+          # Фиолетовый фон
+          for r in range(210, 20, -5):
+              d.ellipse((216-r,216-r,216+r,216+r),
+                       fill=(35,12,75,255))
+
+          # Аметистовый кристалл
+          d.polygon([(216,35),(310,145),(280,330),(216,390),
+                     (150,330),(120,145)],
+                    fill=(135,65,220,255))
+          d.polygon([(216,35),(216,390),(150,330),(120,145)],
+                    fill=(90,35,170,255))
+          d.polygon([(216,35),(310,145),(216,210)],
+                    fill=(205,150,255,255))
+          d.polygon([(216,210),(310,145),(280,330),(216,390)],
+                    fill=(120,55,205,255))
+
+          # Лицо крипера
+          c = (20,10,30,255)
+          d.rectangle((160,170,272,282), fill=c)
+          d.rectangle((180,190,198,220), fill=(220,190,255,255))
+          d.rectangle((234,190,252,220), fill=(220,190,255,255))
+          d.rectangle((198,220,234,252), fill=c)
+          d.rectangle((180,250,198,270), fill=c)
+          d.rectangle((234,250,252,270), fill=c)
+
+          # Сохранение иконок
+          for folder in glob.glob(
+              "app_pojavlauncher/src/main/res/mipmap-*"
+          ):
+              if os.path.isdir(folder):
+                  for name in [
+                      "ic_launcher.webp",
+                      "ic_launcher_round.webp",
+                      "ic_launcher_foreground.webp"
+                  ]:
+                      im.save(os.path.join(folder,name), "WEBP")
+
+          PY
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
