@@ -1,4 +1,4 @@
-name: NEXUS LAUNCHER - Android CI
+name: NEXORA LAUNCHER - Android CI
 
 on:
   workflow_dispatch:
