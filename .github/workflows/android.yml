@@ -23,7 +23,7 @@ jobs:
         with:
           submodules: 
           recursive- name: Generate Amethyst Launcher icon
-        run: |
+        run:
           pip install pillow
           python - <<'PY'
           from PIL import Image, ImageDraw
